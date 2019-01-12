@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Network Visualization</title>
+    <meta name="description" content="A network visualization tool using D3">
+    <meta name="author" content="RACHEL HANNA">
+    <meta name="theme-color" content="#71abb3">
+    <link rel="stylesheet" type="text/css" href="../../CSS/reset.css">
+    <link rel="stylesheet" type="text/css" href="../../CSS/main.css">
+    <link rel="shortcut icon" type="image/png" href="icons8-biotech-24.png"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Alex+Brush|Barlow+Semi+Condensed:200i,400,700|Cookie|Dancing+Script:700|Fira+Sans+Extra+Condensed:200i,400,700|Fredericka+the+Great|Great+Vibes|Kaushan+Script|Noto+Serif+KR:200,400,700|Overpass:200i,400,700|Pragati+Narrow:400,700|Tangerine:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Aguafina+Script|Alex+Brush|Allura|Amatic+SC|Bilbo+Swash+Caps|Great+Vibes|Herr+Von+Muellerhoff|Italianno|Miss+Fajardose|Mr+De+Haviland|Parisienne|Pinyon+Script|Rouge+Script|Sacramento|Tangerine:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans|Open+Sans+Condensed:300|PT+Sans+Narrow|Yanone+Kaffeesatz" rel="stylesheet">
+</head>
+    
+<body id="vis">
+    <main>
+        <h1 id="netVis">Network Visualization Tool</h1>
+        <div class="projBlockCol"><h2>2D Visualization</h2><svg width="300" height="300"></svg></div>
+        <div class="projBlockCol"><h2>3D Visualization</h2><div id="6fb9c35f-9b0e-417f-8faf-d74314819181" style="width: 300px; height: 300px;" class="plotly-graph-div"></div></div>
+    </main>
+      
+
+    
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+var svg = d3.select("svg"),
+    margin = {top: 20, right: 20, bottom: 30, left: 50},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom,
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+var x = d3.scaleLinear()
+    .rangeRound([0, width]);
+
+var y = d3.scaleLinear()
+    .rangeRound([height, 0]);
+
+// new code
+
+var line = d3.line()
+    .x(function(d) { return x(d.x); })
+    .y(function(d) { return y(d.y); });
+
+d3.tsv("nums2d.tsv", function(d) {
+  d.x = +d.x;
+  d.y = +d.y;
+  return d;
+}, function(error, data) {
+  if (error) throw error;
+
+  x.domain(d3.extent(data, function(d) { return d.x; }));
+  y.domain(d3.extent(data, function(d) { return d.y; }));
+
+  g.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x))
+    //.select(".domain")
+      //.remove();
+
+  g.append("g")
+      .call(d3.axisLeft(y))
+    .append("text")
+      .attr("fill", "#000")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", "0.71em")
+      .attr("text-anchor", "end")
+      .text("Price ($)");
+
+  g.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-linecap", "round")
+      .attr("stroke-width", 5)
+      .attr("d", line);
+});
+
+</script>
+    <script src="Plot%201.js"></script>
+    
+        <script type="text/javascript">
+            (function(){
+                window.PLOTLYENV={'BASE_URL': 'https://plot.ly'};
+
+                var gd = document.getElementById('6fb9c35f-9b0e-417f-8faf-d74314819181')
+                var resizeDebounce = null;
+
+                function resizePlot() {
+                    var bb = gd.getBoundingClientRect();
+                    Plotly.relayout(gd, {
+                        width: bb.width,
+                        height: bb.height
+                    });
+                }
+
+                
+
+                
+                Plotly.plot(gd, {
+                    data: [{"opacity": 1, "zsrc": "rjoyhanna:0:284d4c", "ysrc": "rjoyhanna:0:6cf43e", "xsrc": "rjoyhanna:0:c2a958", "mode": "lines", "y": ["11", "22", "39", "54", "44", "50", "65", "49", "75", "62", "89", "92", "107", "105", "109", "107", "107", "109", "110", "111", "113", "112", "110", "113", "89", "118", "121"], "x": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27"], "line": {"reversescale": false, "width": 6, "color": [], "colorsrc": "rjoyhanna:0:f30332"}, "z": ["10", "8", "9", "5", "8", "6", "7", "8", "9", "10", "15", "8", "13", "14", "15", "16", "20", "18", "19", "20", "21", "30", "27", "32", "40", "34", "27"], "type": "scatter3d"}],
+                    layout: {"width": 300, "margin": {"r": 0, "b": 0, "l": 0, "t": 0}, "scene": {"camera": {"eye": {"y": 1.6984975366160227, "x": -1.3191269987629306, "z": -0.2500201576753502}, "up": {"y": 0, "x": 0, "z": 1}, "center": {"y": 0, "x": 0, "z": 0}}, "aspectratio": {"y": 1, "x": 1, "z": 1}, "aspectmode": "auto"}, "height": 300},
+                    frames: [],
+                    config: {"mapboxAccessToken": "pk.eyJ1IjoiY2hyaWRkeXAiLCJhIjoiY2lxMnVvdm5iMDA4dnhsbTQ5aHJzcGs0MyJ9.X9o_rzNLNesDxdra4neC_A", "linkText": "Export to plot.ly", "showLink": true}
+                });
+                
+           }());
+        </script>
+    </body>
+</html>
